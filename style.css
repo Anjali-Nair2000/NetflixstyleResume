@@ -1,0 +1,525 @@
+body{
+    margin:0;
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* LOADING SCREEN */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
+    /* Remove old fadeOut animation here; we'll control via JS */
+}
+
+.loading-logo {
+    font-size: 120px;
+    font-weight: bold;
+    color: #e50914; /* Netflix red */
+    animation: glow 2s infinite;
+    transition: transform 0.8s ease, opacity 0.8s ease; /* For zoom + fade */
+}
+
+/* Glow effect */
+@keyframes glow {
+    0% { text-shadow: 0 0 10px #e50914; }
+    50% { text-shadow: 0 0 30px #e50914; }
+    100% { text-shadow: 0 0 10px #e50914; }
+}
+
+/* Spinner ring */
+.loading-ring {
+    margin-top: 20px;
+    width: 60px;
+    height: 60px;
+    border: 5px solid #333;
+    border-top: 5px solid #e50914;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Zoom & fade class triggered by JS */
+.zoom-fade {
+    transform: scale(20); /* Logo zooms in */
+    opacity: 0;           /* Fades out */
+}
+
+
+/*NAVBAR*/
+.navbar {
+    width: 100%;
+    height: 70px;                    /* FIXED HEIGHT */
+    padding: 0 40px;                 /* REDUCED PADDING */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #0d0d0d, #1a1f22);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;          /* IMPORTANT FIX */
+}
+
+/* Left grouped items */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;                       /* Reduced spacing */
+}
+
+/* Logo */
+.logo {
+    font-size: 28px;                 /* Slightly smaller */
+    font-weight: 750;
+    color: #e50914;
+    letter-spacing: -1px;
+}
+
+/* Menu */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;                       /* Reduced spacing */
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #ddd;
+    font-size: 15px;
+}
+
+.nav-links :hover{
+    opacity: 0.7;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Prevent section titles from hiding behind navbar */
+.category {
+    scroll-margin-top: 80px; /* same or slightly larger than navbar height */
+}
+
+/* Icons + profile */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;                       /* Reduced spacing */
+}
+
+.profile-badge {
+    background: #e50914;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px; /* SQUARE with slightly rounded corners */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+.nav-icon {
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.nav-icon:hover {
+    opacity: 0.7;
+}
+
+
+.logo span{
+color: red;
+}
+
+/* HERO SECTION */
+.hero-section{
+    height: 60vh;
+    background: url('https://picsum.photos/1200/600') no-repeat center/cover;
+    display: flex;
+    align-items: flex-end;
+    padding: 80px 40px;
+    margin-top: 70px;
+    position: relative;
+}
+
+.hero-text h1{
+    font-weight: 800;
+    font-size: 85px;
+    margin-bottom: 5px;
+    
+}
+
+.hero-text h2{
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    margin-right: 650px;
+}
+
+.hero-text p{
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-right: 600px;
+}
+
+.hero-btn{
+    background: red;
+    border: none;
+    padding: 12px 20px;
+    color: white;
+    margin-top: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.hero-btn:hover{
+    background: #b30000;
+}
+
+/*PLAY INTRO BTN*/
+.play-intro-btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 12px 28px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.play-intro-btn:hover {
+    background: #e6e6e6;
+    transform: scale(1.05);
+}
+
+.play-intro-btn::before {
+    content: "▶";
+    font-size: 20px;
+}
+
+.play-intro-btn {
+    position: relative;
+    z-index: 5;
+}
+
+
+/* Popup Background */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+
+/* Popup Card */
+.intro-card {
+    background: #171717;
+    padding: 40px;
+    border-radius: 10px;
+    width: 55%;
+    color: white;
+    text-align: left;
+    animation: popupFade 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 0px 40px rgba(0,0,0,0.8);
+    position: relative;
+}
+.intro-card {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
+            url('https://picsum.photos/1200/800') center/cover no-repeat;
+    padding: 50px;
+    border-radius: 12px;
+    height: 70vh;
+    width: 60%;
+    color: white;
+    text-align: left;
+    animation: popupFade 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+    
+.close-intro {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+.close-intro:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+.intro-buttons {
+    margin-top: 40 px;
+    display: flex;
+    gap: 15px;
+}
+
+.intro-main-btn {
+    background: #e50914;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.intro-main-btn:hover {
+    background: #b2070f;
+}
+
+.intro-secondary-btn {
+    background: rgba(255,255,255,0.1);
+    padding: 12px 28px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.intro-secondary-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.intro-card h1 {
+    font-size: 58px;
+    margin-bottom:60px;       /* Tight header spacing */
+    font-weight: 600;
+}
+
+.intro-card h2 {
+    font-size: 20px;
+    margin-top:60px ;       /* Space between title + paragraph */
+    font-weight: 400;
+    opacity: 0.85;
+}
+
+.intro-card p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-top: 10px;         /* Space above paragraph */
+    opacity: 0.85;
+}
+
+
+/* Universal Card Popup */
+.card-detail-box {
+    width: 55%;
+    max-width: 900px;
+    padding: 50px;
+    background: linear-gradient(to bottom, #1b1b1b, #0c0c0c);
+    border-radius: 12px;
+    animation: popupFade 0.25s ease;
+}
+
+/* Netflix text spacing */
+.card-detail-box h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.card-detail-box p {
+    font-size: 18px;
+    margin-top: 15px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+
+/*CATEGORIES (ROWS)*/
+.category{
+    padding: 20px;
+}
+
+.category-title {
+    font-size: 24px;
+    margin-left: 20px;
+}
+
+.carousel-container {
+    position: relative;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 20px;
+}
+
+.item {
+    min-width: 200px;
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+}
+
+
+/* Dark overlay so text pops like Netflix */
+.item::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.45);
+    border-radius: inherit;
+    transition: background 0.25s ease;
+}
+
+.item span,
+.item div {
+    position: relative;
+    z-index: 2;
+}
+
+/* Text inside card */
+.item-title {
+    position: relative;
+    z-index: 2;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.item:hover {
+    transform: scale(1.25);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.item:hover::before {
+    background: rgba(0,0,0,0.2);
+}
+/*ARROWS*/
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 4px;
+    z-index: 10;
+}
+
+.left-btn {
+    left: 0;
+}
+
+.right-btn {
+    right: 0;
+}
+
+.fade-bottom {
+    height: 120px;
+    width: 100%;
+    background: linear-gradient(180deg, transparent, #000);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+/* Hide scrollbars but keep scrolling */
+.carousel {
+    scrollbar-width: none;      /* Firefox */
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;             /* Chrome, Edge, Safari */
+}
+
+.learn-more-btn {
+    background: #e50914;          /* Netflix red */
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: bold;
+    transition: background 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.learn-more-btn:hover {
+    background: #b00710;
+    transform: scale(1.05);
+}
+
+.learn-more-btn:active {
+    transform: scale(0.98);
+}
+.card-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    filter: blur(18px) brightness(0.4);
+    z-index: -1;
+} 
